@@ -1,0 +1,284 @@
+{
+  "info": {
+    "name": "UnaHur Anti-Social Net",
+    "description": "Colección de pruebas para la API de UnaHur Anti-Social Net.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    }
+  ],
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Listar usuarios",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/users"
+          }
+        },
+        {
+          "name": "Obtener usuario por id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/users/1"
+          }
+        },
+        {
+          "name": "Crear usuario",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nickName\": \"juanperez\",\n  \"email\": \"juan@mail.com\",\n  \"password\": \"123456\"\n}"
+            },
+            "url": "{{baseUrl}}/users"
+          }
+        },
+        {
+          "name": "Actualizar usuario",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"nuevo@mail.com\"\n}"
+            },
+            "url": "{{baseUrl}}/users/1"
+          }
+        },
+        {
+          "name": "Eliminar usuario",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/users/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Posts",
+      "item": [
+        {
+          "name": "Listar posts",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/posts"
+          }
+        },
+        {
+          "name": "Obtener post por id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/posts/1"
+          }
+        },
+        {
+          "name": "Crear post",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Mi primer posteo\",\n  \"userId\": 1,\n  \"tags\": [1],\n  \"images\": [\"https://picsum.photos/200\"]\n}"
+            },
+            "url": "{{baseUrl}}/posts"
+          }
+        },
+        {
+          "name": "Actualizar post",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Descripción editada\"\n}"
+            },
+            "url": "{{baseUrl}}/posts/1"
+          }
+        },
+        {
+          "name": "Eliminar post",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/posts/1"
+          }
+        },
+        {
+          "name": "Asociar etiqueta a post",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tagId\": 1\n}"
+            },
+            "url": "{{baseUrl}}/posts/1/tags"
+          }
+        },
+        {
+          "name": "Quitar etiqueta de post",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/posts/1/tags/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "PostImages",
+      "item": [
+        {
+          "name": "Listar imágenes",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/postimages"
+          }
+        },
+        {
+          "name": "Obtener imagen por id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/postimages/1"
+          }
+        },
+        {
+          "name": "Agregar imagen a post",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://picsum.photos/300\",\n  \"postId\": 1\n}"
+            },
+            "url": "{{baseUrl}}/postimages"
+          }
+        },
+        {
+          "name": "Actualizar imagen",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://picsum.photos/400\"\n}"
+            },
+            "url": "{{baseUrl}}/postimages/1"
+          }
+        },
+        {
+          "name": "Eliminar imagen",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/postimages/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Comments",
+      "item": [
+        {
+          "name": "Listar comentarios",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/comments"
+          }
+        },
+        {
+          "name": "Obtener comentario por id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/comments/1"
+          }
+        },
+        {
+          "name": "Crear comentario",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Buen post!\",\n  \"userId\": 1,\n  \"postId\": 1\n}"
+            },
+            "url": "{{baseUrl}}/comments"
+          }
+        },
+        {
+          "name": "Actualizar comentario",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Comentario editado\"\n}"
+            },
+            "url": "{{baseUrl}}/comments/1"
+          }
+        },
+        {
+          "name": "Eliminar comentario",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/comments/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tags",
+      "item": [
+        {
+          "name": "Listar etiquetas",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/tags"
+          }
+        },
+        {
+          "name": "Obtener etiqueta por id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/tags/1"
+          }
+        },
+        {
+          "name": "Crear etiqueta",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"tecnologia\"\n}"
+            },
+            "url": "{{baseUrl}}/tags"
+          }
+        },
+        {
+          "name": "Actualizar etiqueta",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"deportes\"\n}"
+            },
+            "url": "{{baseUrl}}/tags/1"
+          }
+        },
+        {
+          "name": "Eliminar etiqueta",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/tags/1"
+          }
+        }
+      ]
+    }
+  ]
+}
