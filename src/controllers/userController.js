@@ -1,8 +1,8 @@
-const { User, Post } = require("../models");
+const { userService } = require("../services");
 
 const crear = async (req, res, next) => {
   try {
-    const user = await User.create(req.body);
+    const user = await userService.crear(req.body);
     res.status(201).json(user);
   } catch (error) {
     next(error);
@@ -11,7 +11,7 @@ const crear = async (req, res, next) => {
 
 const getLista = async (req, res, next) => {
   try {
-    const users = await User.findAll();
+    const users = await userService.obtenerTodos();
     res.json(users);
   } catch (error) {
     next(error);
@@ -20,10 +20,7 @@ const getLista = async (req, res, next) => {
 
 const getId = async (req, res, next) => {
   try {
-    const user = await User.findByPk(req.params.id, { include: Post });
-    if (!user) {
-      return res.status(404).json({ error: "Usuario no encontrado" });
-    }
+    const user = await userService.obtenerPorId(req.params.id);
     res.json(user);
   } catch (error) {
     next(error);
@@ -32,11 +29,7 @@ const getId = async (req, res, next) => {
 
 const update = async (req, res, next) => {
   try {
-    const user = await User.findByPk(req.params.id);
-    if (!user) {
-      return res.status(404).json({ error: "Usuario no encontrado" });
-    }
-    await user.update(req.body);
+    const user = await userService.actualizar(req.params.id, req.body);
     res.json(user);
   } catch (error) {
     next(error);
@@ -45,11 +38,7 @@ const update = async (req, res, next) => {
 
 const remove = async (req, res, next) => {
   try {
-    const user = await User.findByPk(req.params.id);
-    if (!user) {
-      return res.status(404).json({ error: "Usuario no encontrado" });
-    }
-    await user.destroy();
+    await userService.eliminar(req.params.id);
     res.status(204).send();
   } catch (error) {
     next(error);
