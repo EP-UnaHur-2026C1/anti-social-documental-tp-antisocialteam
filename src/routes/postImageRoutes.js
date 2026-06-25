@@ -6,11 +6,11 @@ const {
   createPostImageSchema,
   updatePostImageSchema,
 } = require("../schemas/postImage.schema");
+const upload = require("../middlewares/upload");
 
 router.get("/", controller.getLista);
 router.get("/:id", controller.getId);
-router.post("/", validate(createPostImageSchema), controller.crear);
-router.put("/:id", validate(updatePostImageSchema), controller.update);
+router.post("/", upload.single("image"), validate(createPostImageSchema), controller.crear);
 router.delete("/:id", controller.remove);
 
 module.exports = router;

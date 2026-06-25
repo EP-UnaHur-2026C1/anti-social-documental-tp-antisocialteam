@@ -32,4 +32,23 @@ const eliminar = async (id) => {
   return user;
 };
 
-module.exports = { crear, obtenerTodos, obtenerPorId, actualizar, eliminar };
+const followUser = async (userId, targetUserId) => {
+  if (userId === targetUserId) throw new Error("No puedes seguirte a ti mismo");
+  
+  const targetUser = await User.findById(targetUserId);
+  if (!targetUser) throw new ErrorNoEncontrado("Usuario a seguir no encontrado");
+
+  await User.findByIdAndUpdate(userId, { $addToSet: { following: targetUserId } });
+  await User.findByIdAndUpdate(targetUserId, { $addToSet: { followers: userId } });
+  
+  return { message: "Usuario seguido correctamente" };
+};
+
+const unfollowUser = async (userId, targetUserId) => {
+  await User.findByIdAndUpdate(userId, { $pull: { following: targetUserId } });
+  await User.findByIdAndUpdate(targetUserId, { $pull: { followers: userId } });
+  
+  return { message: "Dejaste de seguir al usuario" };
+};
+
+module.exports = { crear, obtenerTodos, obtenerPorId, actualizar, eliminar, followUser, unfollowUser };

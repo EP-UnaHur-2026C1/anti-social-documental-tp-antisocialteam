@@ -15,6 +15,8 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get("/", (req, res) => res.redirect("/api-docs"));
 
+app.use("/uploads", express.static(path.join(__dirname, "../assets/uploads")));
+
 app.use("/", routes);
 
 app.use(errorHandler);

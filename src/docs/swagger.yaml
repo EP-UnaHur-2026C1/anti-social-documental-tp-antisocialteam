@@ -23,7 +23,7 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
         nickName:
           type: string
         email:
@@ -42,11 +42,11 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
         description:
           type: string
         userId:
-          type: integer
+          type: string
         createdAt:
           type: string
           format: date-time
@@ -57,11 +57,11 @@ components:
         description:
           type: string
         userId:
-          type: integer
+          type: string
         tags:
           type: array
           items:
-            type: integer
+            type: string
         images:
           type: array
           items:
@@ -70,11 +70,11 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
         url:
           type: string
         postId:
-          type: integer
+          type: string
     PostImageInput:
       type: object
       required: [url, postId]
@@ -82,18 +82,18 @@ components:
         url:
           type: string
         postId:
-          type: integer
+          type: string
     Comment:
       type: object
       properties:
         id:
-          type: integer
+          type: string
         content:
           type: string
         userId:
-          type: integer
+          type: string
         postId:
-          type: integer
+          type: string
         createdAt:
           type: string
           format: date-time
@@ -104,14 +104,14 @@ components:
         content:
           type: string
         userId:
-          type: integer
+          type: string
         postId:
-          type: integer
+          type: string
     Tag:
       type: object
       properties:
         id:
-          type: integer
+          type: string
         name:
           type: string
     TagInput:
@@ -154,7 +154,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       responses:
         "200":
           description: Usuario encontrado
@@ -168,7 +168,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       requestBody:
         required: true
         content:
@@ -188,13 +188,68 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       responses:
         "204":
           description: Usuario eliminado
         "404":
           description: Usuario no encontrado
-
+  /users/{id}/follow:
+    post:
+      tags: [Users]
+      summary: Seguir a un usuario
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID del usuario que va a seguir a otro
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [targetUserId]
+              properties:
+                targetUserId:
+                  type: string
+                  description: ID del usuario al que se desea seguir
+      responses:
+        "200":
+          description: Usuario seguido correctamente
+        "404":
+          description: Usuario no encontrado
+        "400":
+          description: No puedes seguirte a ti mismo
+  /users/{id}/unfollow:
+    delete:
+      tags: [Users]
+      summary: Dejar de seguir a un usuario
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID del usuario que va a dejar de seguir a otro
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [targetUserId]
+              properties:
+                targetUserId:
+                  type: string
+                  description: ID del usuario al que se desea dejar de seguir
+      responses:
+        "200":
+          description: Dejaste de seguir al usuario
+        "404":
+          description: Usuario no encontrado
   /posts:
     get:
       tags: [Posts]
@@ -225,7 +280,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       responses:
         "200":
           description: Post encontrado
@@ -239,7 +294,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       requestBody:
         required: true
         content:
@@ -262,7 +317,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       responses:
         "204":
           description: Post eliminado
@@ -277,7 +332,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       requestBody:
         required: true
         content:
@@ -287,7 +342,7 @@ paths:
               required: [tagId]
               properties:
                 tagId:
-                  type: integer
+                  type: string
       responses:
         "200":
           description: Etiqueta asociada
@@ -302,12 +357,12 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
         - name: tagId
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       responses:
         "204":
           description: Etiqueta desasociada
@@ -327,9 +382,18 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
-              $ref: "#/components/schemas/PostImageInput"
+              type: object
+              required: [postId, image]
+              properties:
+                postId:
+                  type: string
+                  description: ID del post al que pertenece la imagen
+                image:
+                  type: string
+                  format: binary
+                  description: Archivo de imagen a subir
       responses:
         "201":
           description: Imagen creada
@@ -344,34 +408,10 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       responses:
         "200":
           description: Imagen encontrada
-        "404":
-          description: Imagen no encontrada
-    put:
-      tags: [PostImages]
-      summary: Actualizar URL de imagen
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [url]
-              properties:
-                url:
-                  type: string
-      responses:
-        "200":
-          description: Imagen actualizada
         "404":
           description: Imagen no encontrada
     delete:
@@ -382,7 +422,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       responses:
         "204":
           description: Imagen eliminada
@@ -419,7 +459,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       responses:
         "200":
           description: Comentario encontrado
@@ -433,7 +473,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       requestBody:
         required: true
         content:
@@ -457,7 +497,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       responses:
         "204":
           description: Comentario eliminado
@@ -496,7 +536,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       responses:
         "200":
           description: Etiqueta encontrada
@@ -510,7 +550,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       requestBody:
         required: true
         content:
@@ -530,7 +570,7 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       responses:
         "204":
           description: Etiqueta eliminada

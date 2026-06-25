@@ -1,12 +1,7 @@
 const Joi = require("joi");
 
 const createPostImageSchema = Joi.object({
-  url: Joi.string().uri().required(),
-  postId: Joi.number().integer().required(),
+  postId: Joi.string().hex().length(24).required(),
 });
 
-const updatePostImageSchema = Joi.object({
-  url: Joi.string().uri().required(),
-});
-
-module.exports = { createPostImageSchema, updatePostImageSchema };
+module.exports = { createPostImageSchema };

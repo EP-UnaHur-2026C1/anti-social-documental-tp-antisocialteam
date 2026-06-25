@@ -45,4 +45,22 @@ const remove = async (req, res, next) => {
   }
 };
 
-module.exports = { crear, getLista, getId, update, remove };
+const follow = async (req, res, next) => {
+  try {
+    const result = await userService.followUser(req.params.id, req.body.targetUserId);
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const unfollow = async (req, res, next) => {
+  try {
+    const result = await userService.unfollowUser(req.params.id, req.body.targetUserId);
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { crear, getLista, getId, update, remove, follow, unfollow };

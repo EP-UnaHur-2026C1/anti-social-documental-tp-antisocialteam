@@ -26,6 +26,10 @@ const obtenerTodos = async () => {
     
   for (let post of posts) {
     post.PostImages = await PostImage.find({ postId: post._id });
+    post.Comments = await Comment.find({
+      postId: post._id,
+      createdAt: { $gte: getVisibilityCutoffDate() }
+    }).populate("userId", "nickName");
   }
 
   return posts;
